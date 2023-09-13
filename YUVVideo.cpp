@@ -52,10 +52,8 @@ void YUVVideo::insertBMP(const BMPImage& bmpImage, std::vector<unsigned char>& y
                 unsigned char V = vData[(i / 2) * (imgWidth / 2) + (j / 2)];
 
                 frameBuffer[videoYIndex] = Y;
-                if (i % 2 == 0 && j % 2 == 0) {
-                    frameBuffer[videoUVIndex] = U;
-                    frameBuffer[videoUVIndex + videoWidth * videoHeight / 4] = V;
-                }
+                frameBuffer[videoUVIndex] = U;
+                frameBuffer[videoUVIndex + videoWidth * videoHeight / 4] = V;          
             }
         }
 

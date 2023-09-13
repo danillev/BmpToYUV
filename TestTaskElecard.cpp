@@ -6,6 +6,8 @@
 
 
 int main() {
+    auto startTime = std::chrono::high_resolution_clock::now();
+
 
     std::vector<unsigned char> yData;
     std::vector<unsigned char> uData;
@@ -32,6 +34,9 @@ int main() {
 
     yuvVideo.close();
     std::cout << "Вставка BMP в YUV завершена." << std::endl;
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+    std::cout << "Программа завершена за " << duration.count() << " миллисекунд." << std::endl;
 
     return 0;
 }
