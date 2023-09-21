@@ -33,10 +33,10 @@ int main() {
     yuvVideo.insertBMP(bmpImage, yData, uData, vData);
 
     yuvVideo.close();
-    std::cout << "Вставка BMP в YUV завершена." << std::endl;
+    std::cout << "Inserting BMP into YUV is complete." << std::endl;
     auto endTime = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-    std::cout << "Программа завершена за " << duration.count() << " миллисекунд." << std::endl;
+    std::cout << "The program is completed in " << duration.count() << " milliseconds." << std::endl;
 
     return 0;
 }
