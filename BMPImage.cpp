@@ -42,10 +42,10 @@ bool BMPImage::readImage(std::vector<RGBPixel>& imageData) {
         return false;
     }
 
-    // ѕропускаем заголовок, если он уже был считан
+    // Skip the header if it has already been read
     bmpFile.seekg(sizeof(BMPHeader), ios::beg);
 
-    int dataSize = imgWidth * imgHeight * 3 ; // /2
+    int dataSize = imgWidth * imgHeight * 3 ; 
     imageData.resize(dataSize);
 
     bmpFile.read(reinterpret_cast<char*>(imageData.data()), dataSize);

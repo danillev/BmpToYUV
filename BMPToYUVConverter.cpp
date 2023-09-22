@@ -64,20 +64,5 @@ bool BMPToYUVConverter::convertToYUV(const RGBFrame& frame, std::vector<unsigned
         thread.join();
     }
 
-    
-    int videoWidth = 352;
-    int videoHeight = 288;
-    int imageHeight = frame.getHeight();
-    int imageWidth = frame.getWidth();
-    int frameSize = imageWidth * imageHeight * 3 / 2; // YUV420 format
-
-    std::vector<unsigned char> frameBuffer(frameSize);
-    std::ofstream outputFile;
-    outputFile.open("output_123123.yuv", std::ios::binary);
-    // Записываем компоненту Y
-    outputFile.write(reinterpret_cast<const char*>(yData.data()), yData.size());
-
-    outputFile.close();
-
     return true;
 }
