@@ -21,11 +21,13 @@ struct BMPHeader {
     uint32_t colors;
     uint32_t importantColors;
 };
-#pragma pack(pop)
 
 struct RGBPixel {
     unsigned char R;
     unsigned char G;
     unsigned char B;
 };
+
+
+#pragma pack(pop)
 #endif // STRUCTURES_H

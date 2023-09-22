@@ -31,30 +31,24 @@ void YUVVideo::insertBMP(const BMPImage& bmpImage, std::vector<unsigned char>& y
     int imgHeight = bmpImage.getHeight();
     int videoWidth = 352;
     int videoHeight = 288;
+    
 
     int frameSize = videoWidth * videoHeight * 3 / 2; // YUV420 format
-
     vector<unsigned char> frameBuffer(frameSize);
-
-
-
     while (!videoFile.eof()) {
         videoFile.read(reinterpret_cast<char*>(frameBuffer.data()), frameSize);
-
-
+        
         for (int i = 0; i < imgHeight; ++i) {
             for (int j = 0; j < imgWidth; ++j) {
                 int videoYIndex = i * videoWidth + j;
-                int videoUVIndex = videoWidth * videoHeight + (i / 2) * (videoWidth / 2) + (j / 2);
+                int videoUVIndex = videoWidth * videoHeight + i / 2 * (videoWidth / 2) +  j / 2;
 
                 unsigned char Y = yData[i * imgWidth + j];
+                unsigned char U = uData[(i / 2) * (imgWidth / 2) + (j / 2)];
+                unsigned char V = vData[(i / 2) * (imgWidth / 2) + (j / 2)];
 
                 frameBuffer[videoYIndex] = Y;
-                
                 if (i % 2 == 0 && j % 2 == 0) {
-                    unsigned char U = uData[(i / 2) * (imgWidth / 2) + (j / 2)];
-                    unsigned char V = vData[(i / 2) * (imgWidth / 2) + (j / 2)];
-
                     frameBuffer[videoUVIndex] = U;
                     frameBuffer[videoUVIndex + videoWidth * videoHeight / 4] = V;
                 }

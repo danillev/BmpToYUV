@@ -11,7 +11,8 @@ add_executable(TestTaskElecard
     TestTaskElecard.cpp 
     BMPImage.cpp 
     BMPToYUVConverter.cpp 
-    YUVVideo.cpp)
+    YUVVideo.cpp
+    RGBFrame.cpp)
 
 # Укажите путь к заголовочным файлам вашего проекта
 include_directories(${CMAKE_SOURCE_DIR})

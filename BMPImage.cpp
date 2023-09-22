@@ -29,9 +29,31 @@ bool BMPImage::readHeader() {
     imgWidth = header.width;
     imgHeight = header.height;
 
+
+
     bmpFile.close();
     return true;
 }
+
+bool BMPImage::readImage(std::vector<RGBPixel>& imageData) {
+    ifstream bmpFile(filePath, ios::binary);
+    if (!bmpFile.is_open()) {
+        cerr << "Failed to open BMP image file" << endl;
+        return false;
+    }
+
+    // ѕропускаем заголовок, если он уже был считан
+    bmpFile.seekg(sizeof(BMPHeader), ios::beg);
+
+    int dataSize = imgWidth * imgHeight * 3 ; // /2
+    imageData.resize(dataSize);
+
+    bmpFile.read(reinterpret_cast<char*>(imageData.data()), dataSize);
+
+    bmpFile.close();
+    return true;
+}
+
 
 std::string BMPImage::GetFilePath() const {
     return filePath;
@@ -44,3 +66,4 @@ int BMPImage::getWidth() const {
 int BMPImage::getHeight() const {
     return imgHeight;
 }
+

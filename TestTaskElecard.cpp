@@ -3,27 +3,31 @@
 #include "BMPToYUVConverter.h"
 #include <iostream>
 #include <locale>
+#include <RGBFrame.h>
 
 
 int main() {
     auto startTime = std::chrono::high_resolution_clock::now();
 
-
     std::vector<unsigned char> yData;
     std::vector<unsigned char> uData;
     std::vector<unsigned char> vData;
 
-
     setlocale(LC_ALL, "Russian");
-    BMPImage bmpImage("231000002.bmp");
+    BMPImage bmpImage("231000023.bmp");
     if (!bmpImage.readHeader()) {
         return 1;
     }
 
-    if (!BMPToYUVConverter::convertToYUV(bmpImage, yData, uData, vData)) {
+
+    RGBFrame frame(bmpImage.getWidth(), bmpImage.getHeight());
+    if (!bmpImage.readImage(frame.frameData)) {
         return 1;
     }
 
+    if (!BMPToYUVConverter::convertToYUV(frame, yData, uData, vData)) {
+        return 1;
+    }
 
     YUVVideo yuvVideo("bus_cif.yuv");
     if (!yuvVideo.open()) {
