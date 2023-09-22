@@ -14,7 +14,7 @@ int main() {
     std::vector<unsigned char> vData;
 
     setlocale(LC_ALL, "Russian");
-    BMPImage bmpImage("231000023.bmp");
+    BMPImage bmpImage("231000002.bmp");
     if (!bmpImage.readHeader()) {
         return 1;
     }
