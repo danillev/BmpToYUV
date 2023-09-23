@@ -7,12 +7,9 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Добавьте исполняемый файл и исходные файлы
-add_executable(TestTaskElecard 
-    TestTaskElecard.cpp 
-    BMPImage.cpp 
-    BMPToYUVConverter.cpp 
-    YUVVideo.cpp
-    RGBFrame.cpp)
+file( GLOB SOURCE  ${PROJECT_SOURCE_DIR}/*.cpp )
+file( GLOB INCLUDE ${PROJECT_SOURCE_DIR}/*.h )
+add_executable( ${PROJECT_NAME} TestTaskElecard.cpp  ${SOURCE} ${INCLUDE} )
 
 # Укажите путь к заголовочным файлам вашего проекта
 include_directories(${CMAKE_SOURCE_DIR})
@@ -24,6 +21,3 @@ configure_file(bus_cif.yuv ${CMAKE_BINARY_DIR}/bus_cif.yuv COPYONLY)
 
 # Свяжите заголовочные файлы с исходными файлами
 target_include_directories(TestTaskElecard PUBLIC ${CMAKE_SOURCE_DIR})
-
-# Добавьте файл Structures.h к вашему проекту
-target_sources(TestTaskElecard PRIVATE Structures.h)

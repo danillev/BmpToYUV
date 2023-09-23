@@ -3,14 +3,14 @@
 
 #include <string>
 #include <fstream>
-#include "BMPImage.h"
+#include "BMPFileReader.h"
 
 class YUVVideo {
 public:
     YUVVideo(const std::string& filePath);
     bool open();
     void close();
-    void insertBMP(const BMPImage& bmpImage, std::vector<unsigned char>& yData, std::vector<unsigned char>& uData, std::vector<unsigned char>& vData);
+    void insertBMP(const BMPFileReader& bmpImage, std::shared_ptr<yuvData> yuvDataPtr);
 
 private:
     std::string filePath;

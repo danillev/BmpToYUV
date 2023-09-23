@@ -28,6 +28,10 @@ struct RGBPixel {
     unsigned char B;
 };
 
-
+struct yuvData {
+    std::vector<unsigned char> yData;
+    std::vector<unsigned char> uData;
+    std::vector<unsigned char> vData;
+};
 #pragma pack(pop)
 #endif // STRUCTURES_H

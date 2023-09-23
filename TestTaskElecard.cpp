@@ -1,4 +1,4 @@
-﻿#include "BMPImage.h"
+﻿#include "BMPFileReader.h"
 #include "YUVVideo.h"
 #include "BMPToYUVConverter.h"
 #include <iostream>
@@ -9,23 +9,21 @@
 int main() {
     auto startTime = std::chrono::high_resolution_clock::now();
 
-    std::vector<unsigned char> yData;
-    std::vector<unsigned char> uData;
-    std::vector<unsigned char> vData;
+    std::shared_ptr<yuvData> yuvDataPtr = std::make_shared<yuvData>();
 
     setlocale(LC_ALL, "Russian");
-    BMPImage bmpImage("231000002.bmp");
+    BMPFileReader bmpImage("231000002.bmp");
     if (!bmpImage.readHeader()) {
         return 1;
     }
 
-
-    RGBFrame frame(bmpImage.getWidth(), bmpImage.getHeight());
-    if (!bmpImage.readImage(frame.frameData)) {
+    std::shared_ptr<RGBFrame> frame = std::make_shared<RGBFrame>(RGBFrame(bmpImage.getWidth(), bmpImage.getHeight()));
+    if (!bmpImage.readImage()) {
         return 1;
     }
+    frame = bmpImage.getFrame();
 
-    if (!BMPToYUVConverter::convertToYUV(frame, yData, uData, vData)) {
+    if (!BMPToYUVConverter::convertToYUV(frame, yuvDataPtr)) {
         return 1;
     }
 
@@ -34,7 +32,7 @@ int main() {
         return 1;
     }
 
-    yuvVideo.insertBMP(bmpImage, yData, uData, vData);
+    yuvVideo.insertBMP(bmpImage, yuvDataPtr);
 
     yuvVideo.close();
     std::cout << "Inserting BMP into YUV is complete." << std::endl;

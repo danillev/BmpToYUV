@@ -1,7 +1,7 @@
 #ifndef BMPTOYUVCONVERTER_H
 #define BMPTOYUVCONVERTER_H
 
-#include "BMPImage.h"
+#include "BMPFileReader.h"
 #include "RGBFrame.h"
 #include <fstream>
 #include <iostream>
@@ -11,15 +11,12 @@
 
 class BMPToYUVConverter {
 public:
-    static bool convertToYUV(const RGBFrame& frame, std::vector<unsigned char>& yData, std::vector<unsigned char>& uData, std::vector<unsigned char>& vData);
+    static bool convertToYUV(std::shared_ptr<RGBFrame> frame, std::shared_ptr<yuvData> yuvDataPtr);
     
 private:
-    static void subsampleUV(BMPToYUVConverter& converter, int i, int j, int imgWidth, const RGBPixel& rgb, std::vector<unsigned char>& uData, std::vector<unsigned char>& vData);
+    static void subsampleUV(int i, int j, int imgWidth, const RGBPixel& rgb, std::vector<unsigned char>& uData, std::vector<unsigned char>& vData);
     static unsigned char RGBtoY (const RGBPixel& rgb);
     static unsigned char RGBtoU(const RGBPixel& rgb);
     static unsigned char RGBtoV(const RGBPixel& rgb);
-    std::mutex yDataMutex;
-    std::mutex uDataMutex;
-    std::mutex vDataMutex;
 };
 #endif //BMPTOYUVCONVERTER_H

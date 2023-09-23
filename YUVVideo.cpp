@@ -1,5 +1,5 @@
 #include "YUVVideo.h"
-#include "BMPImage.h"
+#include "BMPFileReader.h"
 #include <iostream>
 
 using namespace std;
@@ -24,7 +24,7 @@ void YUVVideo::close() {
     }
 }
 
-void YUVVideo::insertBMP(const BMPImage& bmpImage, std::vector<unsigned char>& yData, std::vector<unsigned char>& uData, std::vector<unsigned char>& vData) {
+void YUVVideo::insertBMP(const BMPFileReader& bmpImage, std::shared_ptr<yuvData> yuvDataPtr) {
     outputFile.open("output_video.yuv", ios::binary);
     int frameCounter = 0;
     int imgWidth = bmpImage.getWidth();
@@ -43,9 +43,9 @@ void YUVVideo::insertBMP(const BMPImage& bmpImage, std::vector<unsigned char>& y
                 int videoYIndex = i * videoWidth + j;
                 int videoUVIndex = videoWidth * videoHeight + i / 2 * (videoWidth / 2) +  j / 2;
 
-                unsigned char Y = yData[i * imgWidth + j];
-                unsigned char U = uData[(i / 2) * (imgWidth / 2) + (j / 2)];
-                unsigned char V = vData[(i / 2) * (imgWidth / 2) + (j / 2)];
+                unsigned char Y = yuvDataPtr->yData[i * imgWidth + j];
+                unsigned char U = yuvDataPtr->uData[(i / 2) * (imgWidth / 2) + (j / 2)];
+                unsigned char V = yuvDataPtr->vData[(i / 2) * (imgWidth / 2) + (j / 2)];
 
                 frameBuffer[videoYIndex] = Y;
                 if (i % 2 == 0 && j % 2 == 0) {
