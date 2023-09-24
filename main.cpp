@@ -9,7 +9,7 @@
 int main() {
     auto startTime = std::chrono::high_resolution_clock::now();
 
-    std::shared_ptr<yuvData> yuvDataPtr = std::make_shared<yuvData>();
+    
 
     setlocale(LC_ALL, "Russian");
     BMPFileReader bmpImage("231000002.bmp");
@@ -23,10 +23,8 @@ int main() {
     }
     frame = bmpImage.getFrame();
 
-    if (!BMPToYUVConverter::convertToYUV(frame, yuvDataPtr)) {
-        return 1;
-    }
-
+    std::shared_ptr<yuvData> yuvDataPtr = std::make_shared<yuvData>(BMPToYUVConverter::convertToYUV(frame));
+    
     YUVVideo yuvVideo("bus_cif.yuv");
     if (!yuvVideo.open()) {
         return 1;

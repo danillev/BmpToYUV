@@ -11,28 +11,25 @@ unsigned char BMPToYUVConverter::RGBtoV(const RGBPixel& rgb) {
 }
 
 
-void BMPToYUVConverter::subsampleUV(int indexY, int indexX, int imgWidth, const RGBPixel& rgbPixel, std::vector<unsigned char>& uData, std::vector<unsigned char>& vData) {
+void BMPToYUVConverter::subsampleUV(int indexY, int indexX, int imgWidth, const RGBPixel& rgbPixel, yuvData& yuvData) {
     if (indexY % 2 == 0 && indexX % 2 == 0) {
         int uvIndex = (indexY / 2) * (imgWidth / 2) + (indexX / 2);
-        uData[uvIndex] = BMPToYUVConverter::RGBtoU(rgbPixel);
-        vData[uvIndex] = BMPToYUVConverter::RGBtoV(rgbPixel);
-        
+        yuvData.uData[uvIndex] = BMPToYUVConverter::RGBtoU(rgbPixel);
+        yuvData.vData[uvIndex] = BMPToYUVConverter::RGBtoV(rgbPixel);
     }
 }
 
-bool BMPToYUVConverter::convertToYUV(std::shared_ptr<RGBFrame> frame, std::shared_ptr<yuvData> yuvDataPtr) {
-    BMPToYUVConverter converter;
+yuvData BMPToYUVConverter::convertToYUV(std::shared_ptr<RGBFrame> frame) {
+    yuvData yuvDataPtr;
     int imgHeight = frame->getHeight();
     int imgWidth = frame->getWidth();
-    yuvDataPtr->yData.resize(imgWidth * imgHeight);
-    yuvDataPtr->uData.resize(imgWidth * imgHeight / 4);
-    yuvDataPtr->vData.resize(imgWidth * imgHeight / 4);
+    yuvDataPtr.yData.resize(imgWidth * imgHeight);
+    yuvDataPtr.uData.resize(imgWidth * imgHeight / 4);
+    yuvDataPtr.vData.resize(imgWidth * imgHeight / 4);
 
-    
     const int numThreads =  std::thread::hardware_concurrency();
     std::vector<std::thread> threads;
-    threads.reserve(numThreads);
-    
+    threads.reserve(numThreads);  
     
     for (int threadId = 0; threadId < numThreads; ++threadId) {
         threads.emplace_back([&, threadId]() {
@@ -40,8 +37,8 @@ bool BMPToYUVConverter::convertToYUV(std::shared_ptr<RGBFrame> frame, std::share
                 for (int j = 0; j < imgWidth; ++j) {
                     RGBPixel rgb = frame->getPixel(j, i);
                     int yIndex = i * imgWidth + j;
-                    yuvDataPtr->yData[yIndex] = BMPToYUVConverter::RGBtoY(rgb);
-                    subsampleUV(i, j, imgWidth, rgb, yuvDataPtr->uData, yuvDataPtr->vData);
+                    yuvDataPtr.yData[yIndex] = BMPToYUVConverter::RGBtoY(rgb);
+                    subsampleUV(i, j, imgWidth, rgb, yuvDataPtr);
                 }
             }
         });
@@ -50,5 +47,5 @@ bool BMPToYUVConverter::convertToYUV(std::shared_ptr<RGBFrame> frame, std::share
         thread.join();
     }
 
-    return true;
+    return yuvDataPtr;
 }

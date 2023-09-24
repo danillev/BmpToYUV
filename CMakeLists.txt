@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Добавьте исполняемый файл и исходные файлы
 file( GLOB SOURCE  ${PROJECT_SOURCE_DIR}/*.cpp )
 file( GLOB INCLUDE ${PROJECT_SOURCE_DIR}/*.h )
-add_executable( ${PROJECT_NAME} TestTaskElecard.cpp  ${SOURCE} ${INCLUDE} )
+add_executable( ${PROJECT_NAME} main.cpp  ${SOURCE} ${INCLUDE} )
 
 # Укажите путь к заголовочным файлам вашего проекта
 include_directories(${CMAKE_SOURCE_DIR})

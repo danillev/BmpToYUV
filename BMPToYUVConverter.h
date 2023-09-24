@@ -11,10 +11,10 @@
 
 class BMPToYUVConverter {
 public:
-    static bool convertToYUV(std::shared_ptr<RGBFrame> frame, std::shared_ptr<yuvData> yuvDataPtr);
+    static yuvData convertToYUV(std::shared_ptr<RGBFrame> frame);
     
 private:
-    static void subsampleUV(int i, int j, int imgWidth, const RGBPixel& rgb, std::vector<unsigned char>& uData, std::vector<unsigned char>& vData);
+    static void subsampleUV(int i, int j, int imgWidth, const RGBPixel& rgb, yuvData& yuvData);
     static unsigned char RGBtoY (const RGBPixel& rgb);
     static unsigned char RGBtoU(const RGBPixel& rgb);
     static unsigned char RGBtoV(const RGBPixel& rgb);
